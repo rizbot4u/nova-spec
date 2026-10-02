@@ -1,6 +1,8 @@
 # NOVA Skill Contract
 
-**Status:** v1, normative
+**Status:** v1, normative — **FROZEN 2026-10-02**
+**Next review:** 2027-01-02
+**Schema:** all 8 invariants enforced by [`skill-contract.schema.json`](skill-contract.schema.json)
 
 ---
 
