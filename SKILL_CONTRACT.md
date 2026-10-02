@@ -1,6 +1,43 @@
 # NOVA Skill Contract
 
-**Status:** v1, normative  
+**Status:** v1, normative
+
+---
+
+## Schema Enforcement
+
+Every invariant in this document is enforced by [`skill-contract.schema.json`](skill-contract.schema.json) at registration time. Specifically:
+
+| Invariant | Enforcement |
+|---|---|
+| #1 No implicit authority | `authorization.permissions` required, non-empty |
+| #2 Trusted identity only | `ownership` required with owner_type/owner_id |
+| #3 No direct rail access | `execution.provider` required, `rails` restricted to `cex` / `dex` |
+| #4 Closed, validated parameters | input/output schemas must be `additionalProperties: false` and contain no remote `$ref` |
+| #5 Side effects are explicit | `write` side_effect requires `idempotency: required` AND `approval.mode` in (`conditional`, `always`) |
+| #6 Versioned behavior | `identity.version` must match SemVer pattern |
+| #7 Auditable outcomes | `audit.include_standard_fields` must be `true` |
+| #8 Evidence before enablement | `evaluation` requires non-empty routing, parameters, security, execution lists |
+
+### Impact classification
+
+Every manifest declares `impact.class`:
+- `read` or `stateful_read` → no approval required
+- `write`, `financial`, or `destructive` → approval required (`conditional` or `always`)
+
+This is enforced by a `oneOf` constraint in the schema. A `write` skill with `approval.mode: "none"` fails validation.
+
+### Backoff constraints
+
+`retry.backoff` must satisfy:
+- `initial_ms` in [50, 10000]
+- `max_ms` in [100, 60000]
+- `multiplier` in (1, 5] — exponential, not constant
+- `max_ms >= initial_ms` (validated by the registry, since JSON Schema cannot compare siblings)
+
+---
+
+  
 **Applies to:** every registered NOVA skill, regardless of agent, provider, or execution rail
 
 This contract is the boundary between an agent's reasoning and an operation NOVA may perform. A skill is a versioned, schema-bounded capability; it is not an authorization grant. The registry validates the manifest, Governance authorizes each invocation, the Bridge executes it, and Evals verify its declared behavior.
