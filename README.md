@@ -6,6 +6,11 @@
 
 - [`ARCHITECTURE.md`](ARCHITECTURE.md) — 11-section frozen architecture. Every layer, every rail, every repo.
 - [`SKILL_CONTRACT.md`](SKILL_CONTRACT.md) — the normative contract every NOVA skill must implement.
+- [`skill-contract.schema.json`](skill-contract.schema.json) — machine-checkable JSON Schema (Draft 2020-12) that enforces all 8 invariants at registration time.
+
+
+- [`ARCHITECTURE.md`](ARCHITECTURE.md) — 11-section frozen architecture. Every layer, every rail, every repo.
+- [`SKILL_CONTRACT.md`](SKILL_CONTRACT.md) — the normative contract every NOVA skill must implement.
 
 ## What NOVA is
 
